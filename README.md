@@ -1,14 +1,15 @@
 # Knockoff
 
-A gem for usage of read replicas. Heavily based off of https://github.com/kenn/slavery gem with a few notable differences:
+[![Build Status](https://travis-ci.org/sgringwe/knockoff.svg?branch=master)](https://travis-ci.org/sgringwe/knockoff)
 
-Finished differnees:
+A gem for easily using read replicas. Heavily based off of https://github.com/kenn/slavery and https://github.com/kickstarter/replica_pools gem.
 
-* new name
+## Library Goals
 
-In progress differences:
-
-* support for more than one replica
+* Minimal ActiveRecord monkey-patching
+* Easy run-time configuration using ENV variables
+* Opt-in usage of replicas
+* No need to change code when adding more replicas to pool
 
 ## Installation
 
