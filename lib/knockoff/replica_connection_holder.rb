@@ -2,12 +2,11 @@ module Knockoff
   class ReplicaConnectionHolder < ActiveRecord::Base
     self.abstract_class = true
 
-    class << self
-      # for delayed activation
-      def activate
-        raise Knockoff::Error, 'Knockoff.spec_key invalid!' unless ActiveRecord::Base.configurations[Knockoff.spec_key]
-        establish_connection Knockoff.spec_key.to_sym
-      end
+    attr_accessor :knockoff_uri
+
+    def initialize(knockoff_uri)
+      @knockoff_uri = knockoff_uri
+      establish_connection(knockoff_uri)
     end
   end
 end

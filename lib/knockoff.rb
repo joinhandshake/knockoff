@@ -26,11 +26,22 @@ module Knockoff
       Base.new(:primary).run(&block)
     end
 
-    def replica_connection_holder
-      @replica_connection_holder ||= begin
-        replicaConnectionHolder.activate
-        replicaConnectionHolder
+    def replica_pool
+      @replica_pool ||= begin
+        pool = Concurrent::Hash.new
+
+        config.replica_uris.each_with_index do |uri, index|
+          pool["replica_#{index}"] = ReplicaConnectionHolder.new(uri)
+        end
       end
+    end
+
+    def random_replica_connection
+      replica_pool[replica_pool.keys.sample]
+    end
+
+    def config
+      @config ||= Config.new
     end
 
     def base_transaction_depth
@@ -46,5 +57,4 @@ module Knockoff
       end
     end
   end
-end
 end
