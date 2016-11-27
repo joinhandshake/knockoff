@@ -1,8 +1,9 @@
 require 'active_record'
 require 'knockoff/version'
 require 'knockoff/base'
+require 'knockoff/config'
 require 'knockoff/error'
-require 'knockoff/replica_connection_holder'
+require 'knockoff/replica_connection_pool'
 require 'knockoff/active_record/base'
 require 'knockoff/active_record/relation'
 
@@ -27,17 +28,7 @@ module Knockoff
     end
 
     def replica_pool
-      @replica_pool ||= begin
-        pool = Concurrent::Hash.new
-
-        config.replica_uris.each_with_index do |uri, index|
-          pool["replica_#{index}"] = ReplicaConnectionHolder.new(uri)
-        end
-      end
-    end
-
-    def random_replica_connection
-      replica_pool[replica_pool.keys.sample]
+      @replica_pool ||= ReplicaConnectionPool.new(config.replica_uris)
     end
 
     def config

@@ -25,11 +25,11 @@ module Knockoff
     end
 
     def parse_knockoff_replica_envs_to_uris
-      uri_env_keys = ENV['KNOCKOFF_REPLICA_ENVS'].split(',').each(&:strip)
+      uri_env_keys = ENV['KNOCKOFF_REPLICA_ENVS'].split(',').map(&:strip)
 
       # As a basic prevention of crashes, attempt to parse each DB uri
       # and don't add the uri to the final list if it can't be parsed
-      uri_env_keys.select do |env_key|
+      uri_env_keys.map do |env_key|
         begin
           URI.parse(ENV[env_key])
         rescue URI::InvalidURIError

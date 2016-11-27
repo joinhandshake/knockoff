@@ -13,10 +13,10 @@ module Knockoff
     def decide_with(target)
       raise Knockoff::Error.new('on_slave cannot be used inside transaction block!') if inside_transaction?
 
-      if Knockoff.disabled
-        :primary
-      else
+      if Knockoff.enabled
         target
+      else
+        :primary
       end
     end
 
@@ -26,7 +26,7 @@ module Knockoff
     end
 
     def run_on(target)
-      backup = RequestLocals.fetch(:knockoff) # Save for recursive nested calls
+      backup = RequestLocals.fetch(:knockoff) { nil } # Save for recursive nested calls
       RequestLocals.store[:knockoff] = target
       yield
     ensure
