@@ -1,6 +1,14 @@
 # Knockoff
 
-A gem for usage of read replicas.
+A gem for usage of read replicas. Heavily based off of https://github.com/kenn/slavery gem with a few notable differences:
+
+Finished differnees:
+
+* new name
+
+In progress differences:
+
+* support for more than one replica
 
 ## Installation
 
