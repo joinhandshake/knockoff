@@ -1,4 +1,4 @@
-# Knockoff
+# Knockoff (WIP)
 
 [![Build Status](https://travis-ci.org/sgringwe/knockoff.svg?branch=master)](https://travis-ci.org/sgringwe/knockoff)
 
@@ -9,7 +9,8 @@ A gem for easily using read replicas. Heavily based off of https://github.com/ke
 * Minimal ActiveRecord monkey-patching
 * Easy run-time configuration using ENV variables
 * Opt-in usage of replicas
-* No need to change code when adding more replicas to pool
+* No need to change code when adding/removing replicas
+* Be thread safe
 
 ## Installation
 
@@ -29,7 +30,11 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+TODO
+
+### Usage Notes
+
+* Do not use prepared statements with this gem
 
 ## Development
 

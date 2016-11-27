@@ -7,9 +7,9 @@ Gem::Specification.new do |spec|
   spec.name          = "knockoff"
   spec.version       = Knockoff::VERSION
   spec.authors       = ["Scott Ringwelski"]
-  spec.email         = ["scott@joinhandshake.com"]
+  spec.email         = ["me@sgringwe.com"]
 
-  spec.summary       = %q{A gem for using your replica databases}
+  spec.summary       = %q{A gem for easily using read replicas}
   spec.homepage      = "https://github.com/sgringwe/knockoff"
   spec.license       = "MIT"
 
