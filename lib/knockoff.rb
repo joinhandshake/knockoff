@@ -1,4 +1,5 @@
 require 'active_record'
+require 'request_store_rails'
 require 'knockoff/version'
 require 'knockoff/base'
 require 'knockoff/config'

@@ -7,7 +7,7 @@ module ActiveRecord
 
     def exec_queries
       if knockoff_target == :replica
-        knockoff.on_replica { exec_queries_without_knockoff }
+        Knockoff.on_replica { exec_queries_without_knockoff }
       else
         exec_queries_without_knockoff
       end
@@ -19,7 +19,7 @@ module ActiveRecord
 
     def calculate(*args)
       if knockoff_target == :replica
-        knockoff.on_replica { calculate_without_knockoff(*args) }
+        Knockoff.on_replica { calculate_without_knockoff(*args) }
       else
         calculate_without_knockoff(*args)
       end
