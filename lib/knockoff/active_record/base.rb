@@ -7,12 +7,7 @@ module ActiveRecord
         case RequestLocals.fetch(:knockoff) { nil }
         when :replica
           # Attempts to use a random replica connection, but otherwise falls back to primary
-          random_connection = Knockoff.replica_pool.random_replica_connection
-          if random_connection
-            random_connection.original_connection
-          else
-            original_connection
-          end
+          Knockoff.replica_pool.random_replica_connection.original_connection
         when :primary, NilClass
           original_connection
         else

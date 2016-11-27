@@ -13,23 +13,24 @@ module Knockoff
       set_replica_uris
     end
 
+    def replica_env_keys
+      if ENV['KNOCKOFF_REPLICA_ENVS'].nil?
+        []
+      else
+        ENV['KNOCKOFF_REPLICA_ENVS'].split(',').map(&:strip)
+      end
+    end
+
     private
 
     def set_replica_uris
-      @replica_uris ||=
-        if ENV['KNOCKOFF_REPLICA_ENVS'].nil?
-          []
-        else
-          parse_knockoff_replica_envs_to_uris
-        end
+      @replica_uris ||= parse_knockoff_replica_envs_to_uris
     end
 
     def parse_knockoff_replica_envs_to_uris
-      uri_env_keys = ENV['KNOCKOFF_REPLICA_ENVS'].split(',').map(&:strip)
-
       # As a basic prevention of crashes, attempt to parse each DB uri
       # and don't add the uri to the final list if it can't be parsed
-      uri_env_keys.map do |env_key|
+      replica_env_keys.map do |env_key|
         begin
           URI.parse(ENV[env_key])
         rescue URI::InvalidURIError
