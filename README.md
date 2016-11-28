@@ -1,6 +1,7 @@
 # Knockoff (WIP)
 
 [![Build Status](https://travis-ci.org/sgringwe/knockoff.svg?branch=master)](https://travis-ci.org/sgringwe/knockoff)
+[![Gem Version](https://badge.fury.io/rb/knockoff.svg)](https://badge.fury.io/rb/knockoff)
 
 A gem for easily using read replicas. Heavily based off of https://github.com/kenn/slavery and https://github.com/kickstarter/replica_pools gem.
 
