@@ -41,7 +41,7 @@ Knockoff.enabled = true # NOTE: Consider adding ENV based disabling
 
 ### Configuration
 
-Configuration is done using ENV properties. This makes it easy to add and remove replicas at runtime (or to fully disable if needed). First, set up ENV variables pointing to your replica databases. Consider using the (dotenv)[https://github.com/bkeepers/dotenv] gem for manging ENV variables.
+Configuration is done using ENV properties. This makes it easy to add and remove replicas at runtime (or to fully disable if needed). First, set up ENV variables pointing to your replica databases. Consider using the [dotenv](https://github.com/bkeepers/dotenv) gem for manging ENV variables.
 
 ```
 # .env
@@ -57,7 +57,7 @@ The second ENV variable to set is `KNOCKOFF_REPLICA_ENVS` which is a comma-separ
 KNOCKOFF_REPLICA_ENVS=REPLICA_1
 ```
 
-It can multiple replicas:
+Note that it can be multiple replicas, and `knockoff` will use both evenly:
 
 ```
 KNOCKOFF_REPLICA_ENVS=REPLICA_1,REPLICA_2
@@ -102,19 +102,17 @@ end
 
 #### Replication Lag
 
-Replicas will often be slightly behind the primary database. To compensate, consider "sticking" a user to the primary for a small duration of time to the primary database. A simple implementation for this could look like:
+Replicas will often be slightly behind the primary database. To compensate, consider "sticking" a user who has recently made changes to the primary for a small duration of time to the primary database. This will avoid cases where a user creates a record on primary, is redirected to view that record, and receives a 404 error since the record is not yet in the replica. A simple implementation for this could look like:
 
 ```
 # application_record.rb
 
 after_commit :track_commit_occurred_in_request
 
-def
-  # If any commit happens in a request, we record that and have the logged_in_user
-  # read from primary for a short period of time.
-  def track_commit_occurred_in_request
-    RequestLocals.store['commit_occurred_in_current_request'] = true
-  end
+# If any commit happens in a request, we record that and have the logged_in_user
+# read from primary for a short period of time.
+def track_commit_occurred_in_request
+  RequestLocals.store['commit_occurred_in_current_request'] = true
 end
 
 # application_controller.rb
@@ -129,7 +127,7 @@ end
 
 ```
 
-Then, in your `should_use_primary_database?` method, consult `RequestLocals.fetch('commit_occurred_in_current_request')` for the decision (and perhaps cleanup).
+Then, in your `should_use_primary_database?` method, consult `RequestLocals['commit_occurred_in_current_request']` for the decision.
 
 ### Other Cases
 
