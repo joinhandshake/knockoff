@@ -139,6 +139,32 @@ end
 
 Then, in your `should_use_primary_database?` method, consult `RequestLocals['commit_occurred_in_current_request']` for the decision.
 
+### Run-time Configuration
+
+Knockoff can be configured during runtime. This is done thruogh the `establish_new_connections!` method which takes in a hash of new configurations to apply to each replica before re-connecting.
+
+```
+Knockoff.establish_new_connections!({ 'pool' => db_pool })
+```
+
+For example, to specify a puma connection pool at bootup your code might look something like
+
+```
+# puma.rb
+
+db_pool = Integer(ENV['PUMA_WORKER_DB_POOL'] || threads_count)
+# Configure the database connection to have the new pool size and re-establish connection
+database_config = ActiveRecord::Base.configurations[Rails.env] || Rails.application.config.database_configuration[Rails.env]
+database_config['pool'] = db_pool
+ActiveRecord::Base.establish_connection(database_config)
+Knockoff.establish_new_connections!({ 'pool' => db_pool })
+
+```
+
+#### Forking
+
+For forking servers, you may disconnect all replicas before forking with `Knockoff.disconnect_all!`.
+
 ### Other Cases
 
 There are likely other cases specific to each application where it makes sense to force primary database and avoid replication lag. Good candidates are time-based pages (a live calendar, for example), forms, and payments.
