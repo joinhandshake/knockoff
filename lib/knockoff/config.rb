@@ -30,9 +30,41 @@ module Knockoff
     def parse_knockoff_replica_envs_to_uris
       # As a basic prevention of crashes, attempt to parse each DB uri
       # and don't add the uri to the final list if it can't be parsed
-      replica_env_keys.map do |env_key|
+      replica_env_keys.map.with_index(0) do |env_key, index|
         begin
-          URI.parse(ENV[env_key])
+          uri = URI.parse(ENV[env_key])
+
+          # Configure parameters such as prepared_statements, pool, reaping_frequency for all replicas.
+          replica_config = ActiveRecord::Base.configurations['knockoff_replicas'] || {}
+
+          adapter =
+            if uri.scheme == "postgres"
+              'postgresql'
+            else
+              uri.scheme
+            end
+
+          # Base config from the ENV uri. Sqlite is a special case
+          # and all others follow 'normal' config
+          uri_config =
+            if uri.scheme == 'sqlite3'
+              {
+                'adapter' => adapter,
+                'database' => uri.to_s.split(':')[1]
+              }
+            else
+              {
+                'adapter' => adapter,
+                'database' => (uri.path || "").split("/")[1],
+                'username' => uri.user,
+                'password' => uri.password,
+                'host' => uri.host,
+                'port' => uri.port
+              }
+            end
+
+          # Store the hash in configuration and use it when we establish the connection later.
+          ActiveRecord::Base.configurations["knockoff_replica_#{index}"] = replica_config.merge(uri_config)
         rescue URI::InvalidURIError
           Rails.logger.info "LOG NOTIFIER: Invalid URL specified in follower_env_keys. Not including URI, which may result in no followers used." # URI is purposely not printed to logs
           # Return a 'nil' which will be removed from

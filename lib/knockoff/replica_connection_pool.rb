@@ -24,7 +24,7 @@ module Knockoff
       Knockoff.module_eval %Q{
         class #{class_name} < ActiveRecord::Base
           self.abstract_class = true
-          establish_connection '#{uri}'
+          establish_connection :knockoff_replica_#{replica_index}
         end
       }, __FILE__, __LINE__
 
