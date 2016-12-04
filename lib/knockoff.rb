@@ -11,14 +11,6 @@ require 'knockoff/active_record/relation'
 module Knockoff
   class << self
     attr_accessor :enabled
-    attr_writer :spec_key
-
-    def spec_key
-      case @spec_key
-      when String   then @spec_key
-      when NilClass then @spec_key = "#{ActiveRecord::ConnectionHandling::RAILS_ENV.call}_replica"
-      end
-    end
 
     def on_replica(&block)
       Base.new(:replica).run(&block)
@@ -29,7 +21,20 @@ module Knockoff
     end
 
     def replica_pool
-      @replica_pool ||= ReplicaConnectionPool.new(config.replica_uris)
+      @replica_pool ||= ReplicaConnectionPool.new(config.replica_database_keys)
+    end
+
+    # Iterates through the replica pool and calls disconnect on each one's connection.
+    def disconnect_all!
+      replica_pool.disconnect_all_replicas!
+    end
+
+    # Updates the config (both internal representation and the ActiveRecord::Base.configuration)
+    # with the new config, and then reconnects each replica connection in the replica
+    # pool.
+    def establish_new_connections!(new_config)
+      config.update_replica_configs(new_config)
+      replica_pool.reconnect_all_replicas!
     end
 
     def config

@@ -2,11 +2,25 @@ module Knockoff
   class ReplicaConnectionPool
     attr_reader :pool
 
-    def initialize(uris)
+    def initialize(config_keys)
       @pool = Concurrent::Hash.new
 
-      uris.each_with_index do |uri, index|
-        @pool["replica_#{index}"] = connection_class(index, uri)
+      config_keys.each do |config_key|
+        @pool[config_key] = connection_class(config_key)
+      end
+    end
+
+    def disconnect_all_replicas!
+      @pool.each do |_name, klass|
+        klass.connection.disconnect!
+      end
+    end
+
+    # Assumes that the config has been updated to something new, and
+    # simply reconnects with the config.
+    def reconnect_all_replicas!
+      @pool.each do |database_key, klass|
+        klass.establish_connection database_key.to_sym
       end
     end
 
@@ -16,15 +30,16 @@ module Knockoff
 
     # Based off of code from replica_pools gem
     # generates a unique ActiveRecord::Base subclass for a single replica
-    def connection_class(replica_index, uri)
-      class_name = "Replica#{replica_index}"
+    def connection_class(config_key)
+      # Config key is of schema 'knockoff_replica_n'
+      class_name = "KnockoffReplica#{config_key.split('_').last}"
 
       # TODO: Hardcoding the uri string feels meh. Either set the database config
       # or reference ENV instead
       Knockoff.module_eval %Q{
         class #{class_name} < ActiveRecord::Base
           self.abstract_class = true
-          establish_connection :knockoff_replica_#{replica_index}
+          establish_connection :#{config_key}
         end
       }, __FILE__, __LINE__
 
