@@ -141,7 +141,7 @@ Then, in your `should_use_primary_database?` method, consult `RequestLocals['com
 
 ### Run-time Configuration
 
-Knockoff can be configured during runtime. This is done thruogh the `establish_new_connections!` method which takes in a hash of new configurations to apply to each replica before re-connecting.
+Knockoff can be configured during runtime. This is done through the `establish_new_connections!` method which takes in a hash of new configurations to apply to each replica before re-connecting.
 
 ```
 Knockoff.establish_new_connections!({ 'pool' => db_pool })
