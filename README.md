@@ -63,6 +63,16 @@ Note that it can be multiple replicas, and `knockoff` will use both evenly:
 KNOCKOFF_REPLICA_ENVS=REPLICA_1,REPLICA_2
 ```
 
+Lastly, knockoff will read the `'knockoff_replicas'` database.yml config for specifying additional params:
+
+```
+# database.yml
+
+knockoff_replicas:
+  <<: *common
+  prepared_statements: false
+```
+
 ### Basics
 
 To use one of the replica databases, use
