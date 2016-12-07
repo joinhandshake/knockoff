@@ -165,6 +165,15 @@ Knockoff.establish_new_connections!({ 'pool' => db_pool })
 
 For forking servers, you may disconnect all replicas before forking with `Knockoff.disconnect_all!`.
 
+```
+# puma.rb
+
+before_fork do
+  ActiveRecord::Base.connection_pool.disconnect!
+  Knockoff.disconnect_all!
+end
+```
+
 ### Other Cases
 
 There are likely other cases specific to each application where it makes sense to force primary database and avoid replication lag. Good candidates are time-based pages (a live calendar, for example), forms, and payments.
