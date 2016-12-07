@@ -14,6 +14,11 @@ module Knockoff
       @environment = 'development'
       @replicas_configurations = {}
       set_replica_configs
+
+      if !properly_configured? && Knockoff.enabled
+        puts "[Knockoff] WARNING: Detected enabled Knockoff without proper replica pool configuration. Setting Knockoff.enabled to false."
+        Knockoff.enabled = false
+      end
     end
 
     def replica_database_keys
@@ -33,6 +38,13 @@ module Knockoff
       @replicas_configurations.each do |key, _config|
         update_replica_config(key, new_configs)
       end
+    end
+
+    # If replica_configs actually containts some configuration information, then
+    # we know it was properly configured. Improper URI's will be ignored during the
+    # initialization step.
+    def properly_configured?
+      !@replica_configs.empty?
     end
 
     private
