@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/sgringwe/knockoff.svg?branch=master)](https://travis-ci.org/sgringwe/knockoff)
 [![Gem Version](https://badge.fury.io/rb/knockoff.svg)](https://badge.fury.io/rb/knockoff)
 
-A gem for easily using read replicas. Heavily based off of https://github.com/kenn/slavery and https://github.com/kickstarter/replica_pools gem.
+A gem for easily using read replicas.
 
 ## Library Goals
 
@@ -182,6 +182,10 @@ There are likely other cases specific to each application where it makes sense t
 
 * Do not use prepared statements with this gem
 
+## Inspirations
+
+Heavily based off of https://github.com/kenn/slavery and https://github.com/kickstarter/replica_pools gem.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
@@ -191,7 +195,6 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/sgringwe/knockoff.
-
 
 ## License
 
