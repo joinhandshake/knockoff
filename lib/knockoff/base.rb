@@ -11,13 +11,16 @@ module Knockoff
   private
 
     def decide_with(target)
-      raise Knockoff::Error.new('on_slave cannot be used inside transaction block!') if inside_transaction?
+      calculated_target =
+        if Knockoff.enabled
+          target
+        else
+          :primary
+        end
 
-      if Knockoff.enabled
-        target
-      else
-        :primary
-      end
+      # Don't allow setting the target to anything other than primary if we are already in a transaction
+      raise Knockoff::Error.new('on_replica cannot be used inside transaction block!') if calculated_target != :primary && inside_transaction?
+      calculated_target
     end
 
     def inside_transaction?
