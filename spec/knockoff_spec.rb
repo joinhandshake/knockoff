@@ -61,9 +61,17 @@ describe Knockoff do
       end
     end
 
-    it 'raises error in transaction' do
-      User.transaction do
-        expect { Knockoff.on_replica { User.first } }.to raise_error(Knockoff::Error)
+    context 'in transaction' do
+      it 'raises error in transaction if replica is attempted' do
+        User.transaction do
+          expect { Knockoff.on_replica { User.first } }.to raise_error(Knockoff::Error)
+        end
+      end
+
+      it 'does not raise error in transaction if primary is redundantly enforced' do
+        User.transaction do
+          expect { Knockoff.on_primary { User.first } }.not_to raise_error
+        end
       end
     end
 
@@ -91,6 +99,10 @@ describe Knockoff do
       # http://stackoverflow.com/questions/18198963/with-rails-4-model-scoped-is-deprecated-but-model-all-cant-replace-it
       expect(User.where(nil).to_a.size).to be 2
       expect(User.on_replica.where(nil).to_a.size).to be 1
+    end
+
+    it 'can clear active connections on all replicas' do
+      Knockoff.clear_all_active_connections!
     end
 
     context "bad configurations" do

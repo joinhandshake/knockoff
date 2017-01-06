@@ -10,6 +10,12 @@ module Knockoff
       end
     end
 
+    def clear_all_active_connections!
+      @pool.each do |_name, klass|
+        klass.clear_active_connections!
+      end
+    end
+
     def disconnect_all_replicas!
       @pool.each do |_name, klass|
         klass.connection.disconnect!

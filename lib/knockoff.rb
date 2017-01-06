@@ -24,6 +24,10 @@ module Knockoff
       @replica_pool ||= ReplicaConnectionPool.new(config.replica_database_keys)
     end
 
+    def clear_all_active_connections!
+      replica_pool.clear_all_active_connections!
+    end
+
     # Iterates through the replica pool and calls disconnect on each one's connection.
     def disconnect_all!
       replica_pool.disconnect_all_replicas!
