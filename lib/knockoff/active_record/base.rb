@@ -4,14 +4,14 @@ module ActiveRecord
       alias_method :original_connection, :connection
 
       def connection
-        case RequestLocals.fetch(:knockoff) { nil }
+        case Thread.current[:knockoff]
         when :replica
           # Attempts to use a random replica connection, but otherwise falls back to primary
           Knockoff.replica_pool.random_replica_connection.original_connection
         when :primary, NilClass
           original_connection
         else
-          raise Knockoff::Error, "Invalid target: #{RequestLocals.fetch(:knockoff)}"
+          raise Knockoff::Error, "Invalid target: #{Thread.current[:knockoff]}"
         end
       end
 

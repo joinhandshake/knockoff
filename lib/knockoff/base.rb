@@ -29,11 +29,11 @@ module Knockoff
     end
 
     def run_on(target)
-      backup = RequestLocals.fetch(:knockoff) { nil } # Save for recursive nested calls
-      RequestLocals.store[:knockoff] = target
+      backup = Thread.current[:knockoff] # Save for recursive nested calls
+      Thread.current[:knockoff] = target
       yield
     ensure
-      RequestLocals.store[:knockoff] = backup
+      Thread.current[:knockoff] = backup
     end
   end
 end

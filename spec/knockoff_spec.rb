@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Knockoff do
   def knockoff_value
-    RequestLocals.fetch(:knockoff) { nil }
+    Thread.current[:knockoff]
   end
 
   def on_replica?
@@ -107,7 +107,7 @@ describe Knockoff do
 
     it 'defines self.connection_config' do
       expect(Knockoff::KnockoffReplica0.connection_config).not_to be_nil
-      expect(Knockoff::KnockoffReplica0.connection_config['adapter']).to eq 'sqlite'
+      expect(Knockoff::KnockoffReplica0.connection_config['adapter']).to eq 'sqlite3'
     end
 
     context "bad configurations" do
