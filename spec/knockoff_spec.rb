@@ -105,6 +105,11 @@ describe Knockoff do
       Knockoff.clear_all_active_connections!
     end
 
+    it 'defines self.connection_config' do
+      expect(Knockoff::KnockoffReplica0.connection_config).not_to be_nil
+      expect(Knockoff::KnockoffReplica0.connection_config['adapter']).to eq 'sqlite'
+    end
+
     context "bad configurations" do
       xit 'connects to primary if list of replicas is malformed' do
         before_value = ENV['KNOCKOFF_REPLICA_ENVS']

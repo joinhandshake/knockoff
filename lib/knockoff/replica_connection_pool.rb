@@ -46,6 +46,9 @@ module Knockoff
         class #{class_name} < ActiveRecord::Base
           self.abstract_class = true
           establish_connection :#{config_key}
+          def self.connection_config
+            configurations[#{config_key.to_s.inspect}]
+          end
         end
       }, __FILE__, __LINE__
 
