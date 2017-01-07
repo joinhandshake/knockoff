@@ -1,4 +1,4 @@
-# Knockoff (WIP)
+# Knockoff
 
 [![Build Status](https://travis-ci.org/sgringwe/knockoff.svg?branch=master)](https://travis-ci.org/sgringwe/knockoff)
 [![Gem Version](https://badge.fury.io/rb/knockoff.svg)](https://badge.fury.io/rb/knockoff)
