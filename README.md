@@ -137,7 +137,7 @@ end
 
 ```
 
-Then, in your `should_use_primary_database?` method, consult `RequestLocals['commit_occurred_in_current_request']` for the decision.
+Then, in your `should_use_primary_database?` method, consult `session[:use_leader_until]` for the decision.
 
 ### Run-time Configuration
 
@@ -184,7 +184,7 @@ There are likely other cases specific to each application where it makes sense t
 
 ## Inspirations
 
-Heavily based off of https://github.com/kenn/slavery and https://github.com/kickstarter/replica_pools gem.
+Based off of and inspired by https://github.com/kenn/slavery and https://github.com/kickstarter/replica_pools gem.
 
 ## Development
 
