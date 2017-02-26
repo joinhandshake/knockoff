@@ -5,7 +5,7 @@
 
 A gem for easily using read replicas.
 
-Battle tested at [Handshake](https://joinhandshake.com/engineering/)
+:handshake: Battle tested at [Handshake](https://joinhandshake.com/engineering/)
 
 ## Library Goals
 
