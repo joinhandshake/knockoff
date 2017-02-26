@@ -5,6 +5,8 @@
 
 A gem for easily using read replicas.
 
+Battle tested at [Handshake](https://joinhandshake.com/engineering/)
+
 ## Library Goals
 
 * Minimal ActiveRecord monkey-patching
@@ -12,6 +14,10 @@ A gem for easily using read replicas.
 * Opt-in usage of replicas
 * No need to change code when adding/removing replicas
 * Be thread safe
+
+## Supported Versions
+
+Knockoff has been tested on Rails 4 and 5
 
 ## Installation
 
