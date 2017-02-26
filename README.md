@@ -17,7 +17,7 @@ A gem for easily using read replicas.
 
 ## Supported Versions
 
-Knockoff has been tested on Rails 4 and 5
+Knockoff supports Rails 4 and 5
 
 ## Installation
 
