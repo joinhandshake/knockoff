@@ -101,6 +101,11 @@ describe Knockoff do
       expect(User.on_replica.where(nil).to_a.size).to be 1
     end
 
+    it '#on_replica and #on_primary work correctly with simple relations' do
+      expect(Knockoff.on_primary { User.where(id: [1, 2]).to_a.size }).to be 2
+      expect(Knockoff.on_replica { User.where(id: [1, 2]).to_a.size }).to be 1
+    end
+
     it 'can clear active connections on all replicas' do
       Knockoff.clear_all_active_connections!
     end
