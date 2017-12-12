@@ -1,6 +1,6 @@
 # Knockoff
 
-[![Build Status](https://travis-ci.org/sgringwe/knockoff.svg?branch=master)](https://travis-ci.org/sgringwe/knockoff)
+[![Build Status](https://travis-ci.org/joinhandshake/knockoff.svg?branch=master)](https://travis-ci.org/joinhandshake/knockoff)
 [![Gem Version](https://badge.fury.io/rb/knockoff.svg)](https://badge.fury.io/rb/knockoff)
 
 A gem for easily using read replicas.
@@ -200,7 +200,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/sgringwe/knockoff.
+Bug reports and pull requests are welcome on GitHub at https://github.com/joinhandshake/knockoff.
 
 ## License
 
