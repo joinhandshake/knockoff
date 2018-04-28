@@ -11,8 +11,8 @@ module Knockoff
   class << self
     attr_accessor :enabled
 
-    def on_replica(&block)
-      Base.new(:replica).run(&block)
+    def on_replica(check_transaction: true, &block)
+      Base.new(:replica, check_transaction: check_transaction).run(&block)
     end
 
     def on_primary(&block)
