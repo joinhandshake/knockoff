@@ -4,7 +4,7 @@ module ActiveRecord
       alias_method :original_connection, :connection
 
       def connection
-        target = Thread.current[:knockoff] || Knockoff.target
+        target = Thread.current[:knockoff] || Knockoff.default_target
         case target
         when :replica
           # Attempts to use a random replica connection, but otherwise falls back to primary
