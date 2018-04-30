@@ -63,6 +63,7 @@ describe Knockoff do
 
     context 'allows for setting the default target' do
       after(:each) { Knockoff.instance_variable_set("@default_target", nil) }
+
       it 'sets the target' do
         expect(Knockoff.default_target).to be nil
         Knockoff.default_target = :replica
@@ -72,6 +73,7 @@ describe Knockoff do
         Knockoff.default_target = :primary
         expect(Knockoff.default_target).to eq :primary
       end
+
       it 'returns the correct connection' do
         expect(ActiveRecord::Base.connection).to eq ActiveRecord::Base.original_connection
         Knockoff.default_target = :replica
