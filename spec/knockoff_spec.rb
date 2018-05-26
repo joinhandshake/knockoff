@@ -61,6 +61,30 @@ describe Knockoff do
       end
     end
 
+    context 'allows for setting the default target' do
+      after(:each) { Knockoff.instance_variable_set("@default_target", nil) }
+
+      it 'sets the target' do
+        expect(Knockoff.default_target).to be nil
+        Knockoff.default_target = :replica
+        expect(Knockoff.default_target).to eq :replica
+        Knockoff.on_primary { expect(on_replica?).to be false }
+        expect(Knockoff.default_target).to eq :replica
+        Knockoff.default_target = :primary
+        expect(Knockoff.default_target).to eq :primary
+      end
+
+      it 'returns the correct connection' do
+        expect(ActiveRecord::Base.connection).to eq ActiveRecord::Base.original_connection
+        Knockoff.default_target = :replica
+        expect(ActiveRecord::Base.connection).to eq Knockoff::KnockoffReplica0.connection
+        Knockoff.on_primary { expect(ActiveRecord::Base.connection).to eq ActiveRecord::Base.original_connection }
+        expect(ActiveRecord::Base.connection).to_not eq ActiveRecord::Base.original_connection
+        Knockoff.default_target = :primary
+        expect(ActiveRecord::Base.connection).to eq ActiveRecord::Base.original_connection
+      end
+    end
+
     context 'in transaction' do
       it 'raises error in transaction if replica is attempted' do
         User.transaction do

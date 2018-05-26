@@ -1,5 +1,7 @@
 module Knockoff
   class Base
+    attr_reader :target
+
     def initialize(target, check_transaction: true)
       @target = decide_with(target, check_transaction)
     end
