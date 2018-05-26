@@ -12,8 +12,8 @@ module Knockoff
     attr_accessor :enabled
     attr_reader :default_target
 
-    def on_replica(&block)
-      Base.new(:replica).run(&block)
+    def on_replica(check_transaction: true, &block)
+      Base.new(:replica, check_transaction: check_transaction).run(&block)
     end
 
     def on_primary(&block)

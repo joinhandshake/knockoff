@@ -151,5 +151,19 @@ describe Knockoff do
         end
       end
     end
+
+    context 'with non-existent primary db' do
+      before do
+        allow(ActiveRecord::Base.connection).to receive(:open_transactions) { raise 'boom' }
+      end
+
+      it 'raises error by default' do
+        expect{ Knockoff.on_replica  { User.count } }.to raise_error(RuntimeError, 'boom')
+      end
+
+      it 'avoid primary when asked' do
+        expect(Knockoff.on_replica(check_transaction: false) { User.count }).to be(1)
+      end
+    end
   end
 end

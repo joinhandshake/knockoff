@@ -2,8 +2,8 @@ module Knockoff
   class Base
     attr_reader :target
 
-    def initialize(target)
-      @target = decide_with(target)
+    def initialize(target, check_transaction: true)
+      @target = decide_with(target, check_transaction)
     end
 
     def run(&block)
@@ -12,7 +12,7 @@ module Knockoff
 
   private
 
-    def decide_with(target)
+    def decide_with(target, check_transaction)
       calculated_target =
         if Knockoff.enabled
           target
@@ -21,7 +21,9 @@ module Knockoff
         end
 
       # Don't allow setting the target to anything other than primary if we are already in a transaction
-      raise Knockoff::Error.new('on_replica cannot be used inside transaction block!') if calculated_target != :primary && inside_transaction?
+      if calculated_target != :primary && check_transaction && inside_transaction?
+        raise Knockoff::Error.new('on_replica cannot be used inside transaction block!')
+      end
       calculated_target
     end
 
