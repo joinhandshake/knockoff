@@ -188,10 +188,6 @@ There are likely other cases specific to each application where it makes sense t
 
 * Do not use prepared statements with this gem
 
-## Inspirations
-
-Based off of and inspired by https://github.com/kenn/slavery and https://github.com/kickstarter/replica_pools gem.
-
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
