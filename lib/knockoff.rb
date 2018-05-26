@@ -10,6 +10,7 @@ require 'knockoff/active_record/relation'
 module Knockoff
   class << self
     attr_accessor :enabled
+    attr_reader :default_target
 
     def on_replica(&block)
       Base.new(:replica).run(&block)
@@ -17,6 +18,10 @@ module Knockoff
 
     def on_primary(&block)
       Base.new(:primary).run(&block)
+    end
+
+    def default_target=(target)
+      @default_target = Base.new(target).target
     end
 
     def replica_pool

@@ -1,5 +1,7 @@
 module Knockoff
   class Base
+    attr_reader :target
+
     def initialize(target)
       @target = decide_with(target)
     end
