@@ -167,6 +167,14 @@ describe Knockoff do
     end
 
     context 'passwords' do
+      before do
+        @before_value = ENV['KNOCKOFF_REPLICA1']
+      end
+
+      after do
+        ENV['KNOCKOFF_REPLICA1'] = @before_value
+      end
+
       it 'should allow simple passwords in URI' do
         ENV['KNOCKOFF_REPLICA1'] = "mysql2://user:just_regular_password@localhost/tmp/test_replica_db"
 
