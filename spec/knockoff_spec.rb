@@ -165,5 +165,39 @@ describe Knockoff do
         expect(Knockoff.on_replica(check_transaction: false) { User.count }).to be(1)
       end
     end
+
+    context 'passwords' do
+      before do
+        @before_value = ENV['KNOCKOFF_REPLICA1']
+      end
+
+      after do
+        ENV['KNOCKOFF_REPLICA1'] = @before_value
+      end
+
+      it 'should allow simple passwords in URI' do
+        ENV['KNOCKOFF_REPLICA1'] = "mysql2://user:just_regular_password@localhost/tmp/test_replica_db"
+
+        Knockoff.config.send(:parse_knockoff_replica_envs_to_configs)
+
+        expect(ActiveRecord::Base.configurations['knockoff_replica_0']['password']).to eq "just_regular_password"
+      end
+
+      it 'should decode passwords in URI' do
+        ENV['KNOCKOFF_REPLICA1'] = "mysql2://user:%23%20'%2520*%40@localhost/tmp/test_replica_db"
+
+        Knockoff.config.send(:parse_knockoff_replica_envs_to_configs)
+
+        expect(ActiveRecord::Base.configurations['knockoff_replica_0']['password']).to eq "# '%20*@"
+      end
+
+      it 'should allow no passwords in URI' do
+        ENV['KNOCKOFF_REPLICA1'] = "mysql2://user:@localhost/tmp/test_replica_db"
+
+        Knockoff.config.send(:parse_knockoff_replica_envs_to_configs)
+
+        expect(ActiveRecord::Base.configurations['knockoff_replica_0']['password']).to be_nil
+      end
+    end
   end
 end
