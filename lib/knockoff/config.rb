@@ -96,10 +96,17 @@ module Knockoff
 
           # Store the hash in configuration and use it when we establish the connection later.
           key = "knockoff_replica_#{index}"
-          full_config = replica_config.merge(uri_config)
+          config = replica_config.merge(uri_config)
 
-          ActiveRecord::Base.configurations[key] = full_config
-          @replicas_configurations[key] = full_config
+          if ActiveRecord::VERSION::MAJOR >= 6
+            full_config = ActiveRecord::Base.configurations.to_h.merge(key => config)
+
+            ActiveRecord::Base.configurations = full_config
+            @replicas_configurations[key] = config
+          else
+            ActiveRecord::Base.configurations[key] = config
+            @replicas_configurations[key] = config
+          end
         rescue URI::InvalidURIError
           Rails.logger.info "LOG NOTIFIER: Invalid URL specified in follower_env_keys. Not including URI, which may result in no followers used." # URI is purposely not printed to logs
           # Return a 'nil' which will be removed from
