@@ -1,6 +1,10 @@
 ## Unreleased
 
-*None*
+## 1.1.1
+
+- Drop Ruby 2.3 support
+- Add Ruby 2.6 and 2.7 support
+- Fix a deprecation warning in Rails 6
 
 ## 1.1.0
 
