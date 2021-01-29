@@ -6,7 +6,7 @@ ENV['RACK_ENV'] = 'test'
 require 'knockoff'
 
 ActiveRecord::Base.configurations = {
-  test: {
+  'test' => {
     adapter: 'sqlite3',
     database: 'tmp/test_db'
   }
