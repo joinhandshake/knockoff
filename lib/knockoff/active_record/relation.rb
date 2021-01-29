@@ -5,11 +5,11 @@ module ActiveRecord
     # Supports queries like User.on_replica.to_a
     alias_method :exec_queries_without_knockoff, :exec_queries
 
-    def exec_queries
+    def exec_queries(&block)
       if knockoff_target == :replica
-        Knockoff.on_replica { exec_queries_without_knockoff }
+        Knockoff.on_replica { exec_queries_without_knockoff(&block) }
       else
-        exec_queries_without_knockoff
+        exec_queries_without_knockoff(&block)
       end
     end
 
