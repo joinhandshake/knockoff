@@ -17,16 +17,16 @@ ENV['KNOCKOFF_REPLICA_ENVS'] = 'KNOCKOFF_REPLICA1'
 class User < ActiveRecord::Base
 end
 
-# Create two records on master
+# Create two records on primary
 ActiveRecord::Base.establish_connection(:test)
 ActiveRecord::Base.connection.create_table :users, force: true
 User.create
 User.create
 
-# Create one record on slave, emulating replication lag
+# Create one record on replica, emulating replication lag
 ActiveRecord::Base.establish_connection(ENV['KNOCKOFF_REPLICA1'])
 ActiveRecord::Base.connection.create_table :users, force: true
 User.create
 
-# Reconnect to master
+# Reconnect to primary
 ActiveRecord::Base.establish_connection(:test)
