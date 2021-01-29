@@ -6,7 +6,10 @@ ENV['RACK_ENV'] = 'test'
 require 'knockoff'
 
 ActiveRecord::Base.configurations = {
-  'test' => { 'adapter' => 'sqlite3', 'database' => 'tmp/test_db' }
+  test: {
+    adapter: 'sqlite3',
+    database: 'tmp/test_db'
+  }
 }
 
 # Setup the ENV's for replicas
