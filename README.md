@@ -1,11 +1,11 @@
 # Knockoff
 
-[![Build Status](https://travis-ci.org/joinhandshake/knockoff.svg?branch=master)](https://travis-ci.org/joinhandshake/knockoff)
+[![Build Status](https://travis-ci.com/joinhandshake/knockoff.svg?branch=master)](https://travis-ci.com/github/joinhandshake/knockoff)
 [![Gem Version](https://badge.fury.io/rb/knockoff.svg)](https://badge.fury.io/rb/knockoff)
 
 A gem for easily using read replicas.
 
-:handshake: Battle tested at [Handshake](https://joinhandshake.com/engineering/)
+:handshake: Battle tested at [Handshake](https://joinhandshake.com/)
 
 ## Library Goals
 
@@ -17,7 +17,7 @@ A gem for easily using read replicas.
 
 ## Supported Versions
 
-Knockoff supports Rails 4 and 5
+Knockoff supports Rails 4, 5 and 6
 
 ## Installation
 
