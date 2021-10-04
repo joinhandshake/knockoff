@@ -1,0 +1,23 @@
+name: Ruby
+
+on: [push, pull_request]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        ruby-version: ['2.4.0', '2.5.1', '2.6.6', '2.7.2', 'ruby-head']
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby
+        # Lock to this commit, v1.82.0
+        uses: ruby/setup-ruby@5e4f0a10bfc39c97cd5358121291e27e5d97e09b
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Run tests
+        run: bundle exec rake
