@@ -1,6 +1,6 @@
 # Knockoff
 
-[![Build Status](https://travis-ci.com/joinhandshake/knockoff.svg?branch=master)](https://travis-ci.com/github/joinhandshake/knockoff)
+[![Build Status](https://github.com/joinhandshake/knockoff/actions/workflows/ruby.yml/badge.svg)](https://github.com/joinhandshake/knockoff/actions)
 [![Gem Version](https://badge.fury.io/rb/knockoff.svg)](https://badge.fury.io/rb/knockoff)
 
 A gem for easily using read replicas.
