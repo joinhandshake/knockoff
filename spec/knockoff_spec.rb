@@ -134,13 +134,7 @@ describe Knockoff do
 
     it 'defines self.connection_config' do
       expect(Knockoff::KnockoffReplica0.connection_config).not_to be_nil
-
-      # Starting in 2.5+ this is a symbol
-      if RUBY_VERSION == "2.4.0"
-        expect(Knockoff::KnockoffReplica0.connection_config['adapter']).to eq 'sqlite3'
-      else
-        expect(Knockoff::KnockoffReplica0.connection_config[:adapter]).to eq 'sqlite3'
-      end
+      expect(Knockoff::KnockoffReplica0.connection_config['adapter']).to eq 'sqlite3'
     end
 
     context "bad configurations" do
