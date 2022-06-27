@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        ruby-version: ['2.4.0', '2.5.1', '2.6.6', '2.7.2', 'ruby-head']
+        ruby-version: ['2.4.0', '2.5.1', '2.6.6', '2.7.2']
 
     steps:
       # Pin to this commit: v2
