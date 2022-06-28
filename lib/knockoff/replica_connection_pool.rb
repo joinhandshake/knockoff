@@ -30,6 +30,12 @@ module Knockoff
       end
     end
 
+    def set_schema_cache(cache)
+      @pool.each do |_name, klass|
+        klass.connection_pool.schema_cache = cache
+      end
+    end
+
     def random_replica_connection
       @pool[@pool.keys.sample]
     end

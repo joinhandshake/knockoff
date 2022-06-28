@@ -49,6 +49,10 @@ module Knockoff
       @config ||= Config.new
     end
 
+    def set_schema_cache(cache)
+      replica_pool.set_schema_cache(cache)
+    end
+
     def base_transaction_depth
       @base_transaction_depth ||= begin
         testcase = ActiveSupport::TestCase
