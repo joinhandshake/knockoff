@@ -83,6 +83,14 @@ describe Knockoff do
       end
     end
 
+    context 'setting schema cache' do
+      it 'sets the cache to each pool schema_cache value' do
+        expect(Knockoff::KnockoffReplica0.connection_pool.schema_cache).to be_nil
+        Knockoff.set_schema_cache('test')
+        expect(Knockoff::KnockoffReplica0.connection_pool.schema_cache).to eq 'test'
+      end
+    end
+
     context 'in transaction' do
       it 'raises error in transaction if replica is attempted' do
         User.transaction do

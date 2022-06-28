@@ -95,18 +95,24 @@ module Knockoff
             end
 
           # Store the hash in configuration and use it when we establish the connection later.
+          # TODO: In ActiveRecord >= 6, this is a deprecated way to set a configuration. However
+          # there appears to be an issue when calling `ActiveRecord::Base.configurations.to_h` in
+          # version 6.0.4.8 where
+          # multi-database setup is being ignored / dropped. For example if a database.yml setup
+          # has something like..
+          #
+          # development:
+          #   primary:
+          #     ...
+          #   other:
+          #     ...
+          #
+          # then the 'other' database configuration is being dropped.
           key = "knockoff_replica_#{index}"
           config = replica_config.merge(uri_config)
+          ActiveRecord::Base.configurations[key] = config
 
-          if ActiveRecord::VERSION::MAJOR >= 6
-            full_config = ActiveRecord::Base.configurations.to_h.merge(key => config)
-
-            ActiveRecord::Base.configurations = full_config
-            @replicas_configurations[key] = config
-          else
-            ActiveRecord::Base.configurations[key] = config
-            @replicas_configurations[key] = config
-          end
+          @replicas_configurations[key] = config
         rescue URI::InvalidURIError
           Rails.logger.info "LOG NOTIFIER: Invalid URL specified in follower_env_keys. Not including URI, which may result in no followers used." # URI is purposely not printed to logs
           # Return a 'nil' which will be removed from
