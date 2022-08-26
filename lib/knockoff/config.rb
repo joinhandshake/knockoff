@@ -88,7 +88,7 @@ module Knockoff
                 'adapter' => adapter,
                 'database' => (uri.path || "").split("/")[1],
                 'username' => uri.user,
-                'password' => uri.password,
+                'password' => uri.password.present? ? URI.decode(uri.password) : nil,
                 'host' => uri.host,
                 'port' => uri.port
               }
