@@ -70,7 +70,7 @@ module Knockoff
     end
 
     def replica_environment_variable_name
-      @replica_environment_variable_name ||= DEFAULT_REPLICA_ENVIRONMENT_VARIABLE_NAME
+      (@replica_environment_variable_name ||= DEFAULT_REPLICA_ENVIRONMENT_VARIABLE_NAME).to_s
     end
   end
 end

@@ -35,6 +35,11 @@ describe Knockoff do
       Knockoff.replica_environment_variable_name = "CUSTOM_REPLICA_ENV_VAR"
       expect(Knockoff.replica_environment_variable_name).to eq "CUSTOM_REPLICA_ENV_VAR"
     end
+
+    it 'is a string' do
+      Knockoff.replica_environment_variable_name = 54321
+      expect(Knockoff.replica_environment_variable_name).to eq "54321"
+    end
   end
 
   context 'enabled' do
