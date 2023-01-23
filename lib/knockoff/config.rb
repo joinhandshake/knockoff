@@ -26,10 +26,10 @@ module Knockoff
     end
 
     def replica_env_keys
-      if ENV['KNOCKOFF_REPLICA_ENVS'].nil?
+      if ENV[Knockoff.replica_environment_variable_name].nil?
         []
       else
-        ENV['KNOCKOFF_REPLICA_ENVS'].split(',').map(&:strip)
+        ENV[Knockoff.replica_environment_variable_name].split(',').map(&:strip)
       end
     end
 

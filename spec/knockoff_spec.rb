@@ -24,6 +24,19 @@ describe Knockoff do
     end
   end
 
+  context 'replica_environment_variable_name' do
+    after(:each) { Knockoff.replica_environment_variable_name = Knockoff::DEFAULT_REPLICA_ENVIRONMENT_VARIABLE_NAME }
+
+    it 'has a default value' do
+      expect(Knockoff.replica_environment_variable_name).to eq Knockoff::DEFAULT_REPLICA_ENVIRONMENT_VARIABLE_NAME
+    end
+
+    it 'can be configured' do
+      Knockoff.replica_environment_variable_name = "CUSTOM_REPLICA_ENV_VAR"
+      expect(Knockoff.replica_environment_variable_name).to eq "CUSTOM_REPLICA_ENV_VAR"
+    end
+  end
+
   context 'enabled' do
     before(:each) { Knockoff.enabled = true }
 

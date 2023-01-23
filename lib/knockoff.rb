@@ -8,8 +8,11 @@ require 'knockoff/active_record/base'
 require 'knockoff/active_record/relation'
 
 module Knockoff
+  DEFAULT_REPLICA_ENVIRONMENT_VARIABLE_NAME = "KNOCKOFF_REPLICA_ENVS"
+  
   class << self
     attr_accessor :enabled
+    attr_accessor :replica_environment_variable_name
     attr_reader :default_target
 
     def on_replica(check_transaction: true, &block)
@@ -64,6 +67,10 @@ module Knockoff
           0
         end
       end
+    end
+
+    def replica_environment_variable_name
+      @replica_environment_variable_name ||= DEFAULT_REPLICA_ENVIRONMENT_VARIABLE_NAME
     end
   end
 end
