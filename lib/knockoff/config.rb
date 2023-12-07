@@ -34,7 +34,10 @@ module Knockoff
     end
 
     def update_replica_configs(new_configs)
-      ActiveRecord::Base.configurations['knockoff_replicas'].merge(new_configs) if ActiveRecord::Base.configurations['knockoff_replicas'].present?
+      if ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas').present?
+        ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas').first.configuration_hash.merge(new_configs)
+      end
+
       @replicas_configurations.each do |key, _config|
         update_replica_config(key, new_configs)
       end
@@ -66,7 +69,7 @@ module Knockoff
           uri = URI.parse(ENV[env_key])
 
           # Configure parameters such as prepared_statements, pool, reaping_frequency for all replicas.
-          replica_config = ActiveRecord::Base.configurations['knockoff_replicas'] || {}
+          replica_config = ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas')&.first || {}
 
           adapter =
             if uri.scheme == "postgres"
@@ -109,8 +112,10 @@ module Knockoff
           #
           # then the 'other' database configuration is being dropped.
           key = "knockoff_replica_#{index}"
-          config = replica_config.merge(uri_config)
-          ActiveRecord::Base.configurations[key] = config
+          config = replica_config.merge(uri_config).symbolize_keys
+          env_name = ActiveRecord::Base.configurations.configurations.first.env_name
+          new_config = ActiveRecord::DatabaseConfigurations::HashConfig.new(env_name, key, config)
+          ActiveRecord::Base.configurations.configurations << new_config
 
           @replicas_configurations[key] = config
         rescue URI::InvalidURIError
