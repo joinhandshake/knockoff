@@ -41,7 +41,7 @@ Or install it yourself as:
 
 Add an initializer at config/knockoff.rb with the below contents
 
-```
+```ruby
 Knockoff.enabled = true # NOTE: Consider adding ENV based disabling
 ```
 
@@ -49,7 +49,7 @@ Knockoff.enabled = true # NOTE: Consider adding ENV based disabling
 
 Configuration is done using ENV properties. This makes it easy to add and remove replicas at runtime (or to fully disable if needed). First, set up ENV variables pointing to your replica databases. Consider using the [dotenv](https://github.com/bkeepers/dotenv) gem for manging ENV variables.
 
-```
+```dotenv
 # .env
 
 REPLICA_1=postgres://username:password@localhost:5432/database_name
@@ -71,7 +71,7 @@ KNOCKOFF_REPLICA_ENVS=REPLICA_1,REPLICA_2
 
 Lastly, knockoff will read the `'knockoff_replicas'` database.yml config for specifying additional params:
 
-```
+```yml
 # database.yml
 
 knockoff_replicas:
@@ -83,13 +83,13 @@ knockoff_replicas:
 
 To use one of the replica databases, use
 
-```
+```ruby
 Knockoff.on_replica { User.count }
 ```
 
 To force primary, use
 
-```
+```ruby
 Knockoff.on_primary { User.create(name: 'Bob') }
 ```
 
@@ -97,7 +97,7 @@ Knockoff.on_primary { User.create(name: 'Bob') }
 
 A common use case is to use replicas for GET requests and otherwise use primary. A simplified use case might look something like this:
 
-```
+```ruby
 # application_controller.rb
 
 around_action :choose_database
@@ -120,7 +120,7 @@ end
 
 Replicas will often be slightly behind the primary database. To compensate, consider "sticking" a user who has recently made changes to the primary for a small duration of time to the primary database. This will avoid cases where a user creates a record on primary, is redirected to view that record, and receives a 404 error since the record is not yet in the replica. A simple implementation for this could look like:
 
-```
+```ruby
 # application_record.rb
 
 after_commit :track_commit_occurred_in_request
@@ -149,13 +149,13 @@ Then, in your `should_use_primary_database?` method, consult `session[:use_leade
 
 Knockoff can be configured during runtime. This is done through the `establish_new_connections!` method which takes in a hash of new configurations to apply to each replica before re-connecting.
 
-```
+```ruby
 Knockoff.establish_new_connections!({ 'pool' => db_pool })
 ```
 
 For example, to specify a puma connection pool at bootup your code might look something like
 
-```
+```ruby
 # puma.rb
 
 db_pool = Integer(ENV['PUMA_WORKER_DB_POOL'] || threads_count)
@@ -171,7 +171,7 @@ Knockoff.establish_new_connections!({ 'pool' => db_pool })
 
 For forking servers, you may disconnect all replicas before forking with `Knockoff.disconnect_all!`.
 
-```
+```ruby
 # puma.rb
 
 before_fork do
