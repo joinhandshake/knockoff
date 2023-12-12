@@ -49,7 +49,7 @@ Knockoff.enabled = true # NOTE: Consider adding ENV based disabling
 
 Configuration is done using ENV properties. This makes it easy to add and remove replicas at runtime (or to fully disable if needed). First, set up ENV variables pointing to your replica databases. Consider using the [dotenv](https://github.com/bkeepers/dotenv) gem for manging ENV variables.
 
-```
+```dotenv
 # .env
 
 REPLICA_1=postgres://username:password@localhost:5432/database_name
