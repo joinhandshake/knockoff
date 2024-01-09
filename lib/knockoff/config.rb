@@ -53,7 +53,8 @@ module Knockoff
     private
 
     def update_replica_config(key, updated_config)
-      @replicas_configurations[key] = @replicas_configurations[key].configuration_hash.deep_dup.merge!(updated_config)
+      merged_config = @replicas_configurations[key].configuration_hash.deep_dup.merge!(updated_config)
+      @replicas_configurations[key] = ActiveRecord::DatabaseConfigurations::HashConfig.new(key, key, merged_config)
       ActiveRecord::Base.configurations.configurations << @replicas_configurations[key]
     end
 
@@ -68,14 +69,8 @@ module Knockoff
         begin
 
           # Configure parameters such as prepared_statements, pool, reaping_frequency for all replicas.
-          ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas').each do |it|
-            register_replica_copy(index, env_key, it.configuration_hash)
-            break
-          end
-
-          if !ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas').present?
-            register_replica_copy(index, env_key, {})
-          end
+          to_copy = ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas')&.first&.configuration_hash || {}
+          register_replica_copy(index, env_key, to_copy)
 
         rescue URI::InvalidURIError
           Rails.logger.info "LOG NOTIFIER: Invalid URL specified in follower_env_keys. Not including URI, which may result in no followers used." # URI is purposely not printed to logs
