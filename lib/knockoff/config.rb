@@ -35,7 +35,7 @@ module Knockoff
 
     def update_replica_configs(new_configs)
       if ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas').present?
-        new_configs.symbolize_keys!.merge!(ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas').first.configuration_hash)
+        new_configs.deep_dup.merge!(ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas').first.configuration_hash)
       end
 
       @replicas_configurations.each do |key, _config|
