@@ -66,58 +66,16 @@ module Knockoff
       # and don't add the uri to the final list if it can't be parsed
       replica_env_keys.map.with_index(0) do |env_key, index|
         begin
-          uri = URI.parse(ENV[env_key])
 
           # Configure parameters such as prepared_statements, pool, reaping_frequency for all replicas.
-          replica_config = ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas')&.first || {}
+          ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas').each do |it|
+            register_replica_copy(index, env_key, it)
+          end
 
-          adapter =
-            if uri.scheme == "postgres"
-              'postgresql'
-            else
-              uri.scheme
-            end
+          if !ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas').present?
+            register_replica_copy(index, env_key, {})
+          end
 
-          # Base config from the ENV uri. Sqlite is a special case
-          # and all others follow 'normal' config
-          uri_config =
-            if uri.scheme == 'sqlite3'
-              {
-                'adapter' => adapter,
-                'database' => uri.to_s.split(':')[1]
-              }
-            else
-              {
-                'adapter' => adapter,
-                'database' => (uri.path || "").split("/")[1],
-                'username' => uri.user,
-                'password' => uri.password,
-                'host' => uri.host,
-                'port' => uri.port
-              }
-            end
-
-          # Store the hash in configuration and use it when we establish the connection later.
-          # TODO: In ActiveRecord >= 6, this is a deprecated way to set a configuration. However
-          # there appears to be an issue when calling `ActiveRecord::Base.configurations.to_h` in
-          # version 6.0.4.8 where
-          # multi-database setup is being ignored / dropped. For example if a database.yml setup
-          # has something like..
-          #
-          # development:
-          #   primary:
-          #     ...
-          #   other:
-          #     ...
-          #
-          # then the 'other' database configuration is being dropped.
-          key = "knockoff_replica_#{index}"
-          config = replica_config.configuration_hash.symbolize_keys.merge(uri_config)
-          env_name = ActiveRecord::Base.configurations.configurations.first.env_name
-          new_config = ActiveRecord::DatabaseConfigurations::HashConfig.new(env_name, key, config)
-          ActiveRecord::Base.configurations.configurations << new_config
-
-          @replicas_configurations[key] = config
         rescue URI::InvalidURIError
           Rails.logger.info "LOG NOTIFIER: Invalid URL specified in follower_env_keys. Not including URI, which may result in no followers used." # URI is purposely not printed to logs
           # Return a 'nil' which will be removed from
@@ -126,6 +84,41 @@ module Knockoff
           nil
         end
       end.compact
+    end
+
+    def register_replica_copy(index, env_key, configuration_hash)
+      key = "knockoff_replica_#{index}"
+      new_config = create_replica_copy(env_key, key, configuration_hash.deep_dup)
+      ActiveRecord::Base.configurations.configurations << new_config
+      @replicas_configurations[key] = new_config
+    end
+
+    def create_replica_copy(env_key, key, replica_config_hash)
+      uri = URI.parse(ENV[env_key])
+
+      puts uri
+
+      replica_config_hash[:adapter] =
+        if uri.scheme == "postgres"
+          'postgresql'
+        else
+          uri.scheme
+        end
+
+      if uri.scheme == 'sqlite3'
+        replica_config_hash[:database] = uri.to_s.split(':')[1]
+      else
+        replica_config_hash[:database] = (uri.path || "").split("/")[1]
+        replica_config_hash[:username] = uri.user
+        replica_config_hash[:password] = uri.password
+        replica_config_hash[:host] = uri.host
+        replica_config_hash[:port] = uri.port
+      end
+      
+      puts (uri.path || "").split("/")[1]
+      puts replica_config_hash
+
+      ActiveRecord::DatabaseConfigurations::HashConfig.new(key, key, replica_config_hash)
     end
   end
 end
