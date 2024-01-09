@@ -35,11 +35,11 @@ module Knockoff
 
     def update_replica_configs(new_configs)
       if ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas').present?
-        new_configs.deep_dup.merge!(ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas').first.configuration_hash)
+        updated_config = new_configs.deep_dup.merge!(ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas').first.configuration_hash)
       end
 
       @replicas_configurations.each do |key, _config|
-        update_replica_config(key, new_configs)
+        update_replica_config(key, updated_config)
       end
     end
 
@@ -52,9 +52,9 @@ module Knockoff
 
     private
 
-    def update_replica_config(key, new_configs)
-      @replicas_configurations[key].merge!(new_configs)
-      ActiveRecord::Base.configurations[key].merge!(new_configs)
+    def update_replica_config(key, updated_config)
+      @replicas_configurations[key].merge!(updated_config)
+      ActiveRecord::Base.configurations.configurations << @replicas_configurations[key]
     end
 
     def set_replica_configs
