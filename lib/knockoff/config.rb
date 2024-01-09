@@ -70,6 +70,7 @@ module Knockoff
           # Configure parameters such as prepared_statements, pool, reaping_frequency for all replicas.
           ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas').each do |it|
             register_replica_copy(index, env_key, it.configuration_hash)
+            break
           end
 
           if !ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas').present?
