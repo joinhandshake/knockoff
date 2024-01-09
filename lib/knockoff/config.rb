@@ -90,7 +90,7 @@ module Knockoff
       key = "knockoff_replica_#{index}"
       new_config = create_replica_copy(env_key, key, configuration_hash.deep_dup)
       ActiveRecord::Base.configurations.configurations << new_config
-      @replicas_configurations[key] = new_config.deep_dup
+      @replicas_configurations[key] = new_config.configuration_hash.deep_dup
     end
 
     def create_replica_copy(env_key, key, replica_config_hash)
