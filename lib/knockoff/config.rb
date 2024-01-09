@@ -53,7 +53,7 @@ module Knockoff
     private
 
     def update_replica_config(key, updated_config)
-      @replicas_configurations[key].merge!(updated_config)
+      @replicas_configurations[key] = @replicas_configurations[key].configuration_hash.deep_dup.merge!(updated_config)
       ActiveRecord::Base.configurations.configurations << @replicas_configurations[key]
     end
 
@@ -90,13 +90,11 @@ module Knockoff
       key = "knockoff_replica_#{index}"
       new_config = create_replica_copy(env_key, key, configuration_hash.deep_dup)
       ActiveRecord::Base.configurations.configurations << new_config
-      @replicas_configurations[key] = new_config.configuration_hash.deep_dup
+      @replicas_configurations[key] = new_config
     end
 
     def create_replica_copy(env_key, key, replica_config_hash)
       uri = URI.parse(ENV[env_key])
-
-      puts uri
 
       replica_config_hash[:adapter] =
         if uri.scheme == "postgres"
@@ -114,9 +112,6 @@ module Knockoff
         replica_config_hash[:host] = uri.host
         replica_config_hash[:port] = uri.port
       end
-      
-      puts (uri.path || "").split("/")[1]
-      puts replica_config_hash
 
       ActiveRecord::DatabaseConfigurations::HashConfig.new(key, key, replica_config_hash)
     end
