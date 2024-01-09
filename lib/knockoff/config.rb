@@ -112,7 +112,7 @@ module Knockoff
           #
           # then the 'other' database configuration is being dropped.
           key = "knockoff_replica_#{index}"
-          config = replica_config.merge(uri_config).symbolize_keys
+          config = replica_config.symbolize_keys.merge(uri_config)
           env_name = ActiveRecord::Base.configurations.configurations.first.env_name
           new_config = ActiveRecord::DatabaseConfigurations::HashConfig.new(env_name, key, config)
           ActiveRecord::Base.configurations.configurations << new_config
