@@ -35,7 +35,7 @@ module Knockoff
 
     def update_replica_configs(new_configs)
       if ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas').present?
-        updated_config = new_configs.deep_dup.merge!(ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas').first.configuration_hash)
+        updated_config = new_configs.deep_dup.merge!(ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas').first.config)
       end
 
       @replicas_configurations.each do |key, _config|
@@ -53,7 +53,7 @@ module Knockoff
     private
 
     def update_replica_config(key, updated_config)
-      merged_config = @replicas_configurations[key].configuration_hash.deep_dup.merge!(updated_config)
+      merged_config = @replicas_configurations[key].config.deep_dup.merge!(updated_config)
       @replicas_configurations[key] = ActiveRecord::DatabaseConfigurations::HashConfig.new(key, key, merged_config)
       ActiveRecord::Base.configurations.configurations << @replicas_configurations[key]
     end
@@ -69,7 +69,7 @@ module Knockoff
         begin
 
           # Configure parameters such as prepared_statements, pool, reaping_frequency for all replicas.
-          to_copy = ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas')&.first&.configuration_hash || {}
+          to_copy = ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas')&.first&.config || {}
           register_replica_copy(index, env_key, to_copy)
 
         rescue URI::InvalidURIError
