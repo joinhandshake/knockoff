@@ -2,19 +2,18 @@ PATH
   remote: .
   specs:
     knockoff (1.4.0)
-      activerecord (>= 6, < 7)
-      activesupport (>= 6, < 7)
-      sqlite3
+      activerecord (= 6.1.7.7)
+      activesupport (= 6.1.7.7)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (6.1.7.6)
-      activesupport (= 6.1.7.6)
-    activerecord (6.1.7.6)
-      activemodel (= 6.1.7.6)
-      activesupport (= 6.1.7.6)
-    activesupport (6.1.7.6)
+    activemodel (6.1.7.7)
+      activesupport (= 6.1.7.7)
+    activerecord (6.1.7.7)
+      activemodel (= 6.1.7.7)
+      activesupport (= 6.1.7.7)
+    activesupport (6.1.7.7)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
@@ -39,7 +38,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.12.0)
     rspec-support (3.12.1)
-    sqlite3 (1.7.0-arm64-darwin)
+    sqlite3 (2.0.3-arm64-darwin)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     zeitwerk (2.6.12)
@@ -52,6 +51,7 @@ DEPENDENCIES
   knockoff!
   rake (~> 10.0)
   rspec
+  sqlite3
 
 BUNDLED WITH
    2.4.22
