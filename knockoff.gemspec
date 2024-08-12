@@ -18,11 +18,11 @@ Gem::Specification.new do |spec|
   spec.bindir        = "bin"
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency 'activerecord', '6.1.7.7'
-  spec.add_runtime_dependency 'activesupport', '6.1.7.7'
+  spec.add_runtime_dependency 'activerecord'
+  spec.add_runtime_dependency 'activesupport'
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec"
-  spec.add_development_dependency 'sqlite3', "1.5.0"
+  spec.add_development_dependency 'sqlite3', "~> 1.5.0"
 end
