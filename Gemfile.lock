@@ -2,8 +2,8 @@ PATH
   remote: .
   specs:
     knockoff (1.4.0)
-      activerecord (= 6.1.7.7)
-      activesupport (= 6.1.7.7)
+      activerecord (>= 6, < 7)
+      activesupport (>= 6, < 7)
 
 GEM
   remote: https://rubygems.org/
@@ -61,7 +61,7 @@ DEPENDENCIES
   knockoff!
   rake (~> 10.0)
   rspec
-  sqlite3 (= 1.5.0)
+  sqlite3 (~> 1.5.0)
 
 BUNDLED WITH
    2.5.17
