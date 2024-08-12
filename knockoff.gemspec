@@ -13,6 +13,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/sgringwe/knockoff"
   spec.license       = "MIT"
 
+  spec.platform      = Gem::Platform::RUBY
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "bin"
   spec.require_paths = ["lib"]
