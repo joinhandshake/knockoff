@@ -53,7 +53,7 @@ DEPENDENCIES
   knockoff!
   rake (~> 10.0)
   rspec
-  sqlite3 (~> 1)
+  sqlite3 (~> 1.4)
 
 BUNDLED WITH
    2.4.22
