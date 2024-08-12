@@ -38,14 +38,22 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
     rspec-support (3.13.1)
-    sqlite3 (1.7.3-arm64-darwin)
-    sqlite3 (1.7.3-x86_64-linux)
+    sqlite3 (1.5.0-aarch64-linux)
+    sqlite3 (1.5.0-arm-linux)
+    sqlite3 (1.5.0-arm64-darwin)
+    sqlite3 (1.5.0-x86-linux)
+    sqlite3 (1.5.0-x86_64-darwin)
+    sqlite3 (1.5.0-x86_64-linux)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     zeitwerk (2.6.17)
 
 PLATFORMS
-  arm64-darwin-23
+  aarch64-linux
+  arm-linux
+  arm64-darwin
+  x86-linux
+  x86_64-darwin
   x86_64-linux
 
 DEPENDENCIES
@@ -53,7 +61,7 @@ DEPENDENCIES
   knockoff!
   rake (~> 10.0)
   rspec
-  sqlite3 (< 2)
+  sqlite3 (= 1.5.0)
 
 BUNDLED WITH
-   2.4.22
+   2.5.17
