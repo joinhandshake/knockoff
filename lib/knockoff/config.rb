@@ -21,8 +21,28 @@ module Knockoff
       end
     end
 
-    def replica_database_keys
-      @replicas_configurations.keys
+    def set_replica_configs
+      @replica_configs ||= parse_knockoff_replica_envs_to_configs
+    end
+
+    def parse_knockoff_replica_envs_to_configs
+      # As a basic prevention of crashes, attempt to parse each DB uri
+      # and don't add the uri to the final list if it can't be parsed
+      replica_env_keys.map.with_index(0) do |env_key, index|
+        begin
+
+          # Configure parameters such as prepared_statements, pool, reaping_frequency for all replicas.
+          to_copy = ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas')&.first&.configuration_hash || {}
+          register_replica_copy(index, env_key, to_copy)
+
+        rescue URI::InvalidURIError
+          Rails.logger.info "LOG NOTIFIER: Invalid URL specified in follower_env_keys. Not including URI, which may result in no followers used." # URI is purposely not printed to logs
+          # Return a 'nil' which will be removed from
+          # configs with `compact`, resulting in no configs and no followers,
+          # therefore disabled since this env will not be in environments list.
+          nil
+        end
+      end.compact
     end
 
     def replica_env_keys
@@ -56,30 +76,6 @@ module Knockoff
       merged_config = @replicas_configurations[key].configuration_hash.deep_dup.merge!(updated_config)
       @replicas_configurations[key] = ActiveRecord::DatabaseConfigurations::HashConfig.new(key, key, merged_config)
       ActiveRecord::Base.configurations.configurations << @replicas_configurations[key]
-    end
-
-    def set_replica_configs
-      @replica_configs ||= parse_knockoff_replica_envs_to_configs
-    end
-
-    def parse_knockoff_replica_envs_to_configs
-      # As a basic prevention of crashes, attempt to parse each DB uri
-      # and don't add the uri to the final list if it can't be parsed
-      replica_env_keys.map.with_index(0) do |env_key, index|
-        begin
-
-          # Configure parameters such as prepared_statements, pool, reaping_frequency for all replicas.
-          to_copy = ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas')&.first&.configuration_hash || {}
-          register_replica_copy(index, env_key, to_copy)
-
-        rescue URI::InvalidURIError
-          Rails.logger.info "LOG NOTIFIER: Invalid URL specified in follower_env_keys. Not including URI, which may result in no followers used." # URI is purposely not printed to logs
-          # Return a 'nil' which will be removed from
-          # configs with `compact`, resulting in no configs and no followers,
-          # therefore disabled since this env will not be in environments list.
-          nil
-        end
-      end.compact
     end
 
     def register_replica_copy(index, env_key, configuration_hash)
