@@ -13,9 +13,9 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/sgringwe/knockoff"
   spec.license       = "MIT"
 
+  spec.platform      = Gem::Platform::RUBY
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.bindir        = "bin"
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency 'activerecord', '>= 6', '< 7'
@@ -24,5 +24,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec"
-  spec.add_development_dependency 'sqlite3'
+  spec.add_development_dependency 'sqlite3', "~> 1.5.0"
 end

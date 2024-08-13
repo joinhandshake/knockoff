@@ -1,5 +1,9 @@
 ## Unreleased
 
+## 1.4.0
+
+Update to be Rails 6.1 compatible
+
 ## 1.1.1
 
 - Drop Ruby 2.3 support
