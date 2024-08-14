@@ -1,3 +1,5 @@
+## Unreleased
+
 ## 1.5.0
 
 Update to be Rails 7.0 compatible. Drops support for ruby 2.6 and Rails 6.0-

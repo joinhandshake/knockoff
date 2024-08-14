@@ -18,6 +18,7 @@ A gem for easily using read replicas.
 ## Supported Versions
 
 | Knockoff version: | 1.0 | 1.1.0 | 1.1.1 | 1.4 | 1.5 |
+| -------- | ------- | -------- | ------- | -------- |
 | Ruby 2.2 | [x] | [ ] | [ ] | [ ] | [ ] |
 | Ruby 2.3 | [x] | [x] | [ ] | [ ] | [ ] |
 | Ruby 2.4 | [x] | [x] | [x] | [ ] | [ ] |
@@ -28,6 +29,7 @@ A gem for easily using read replicas.
 | Ruby 3.1 | [ ] | [ ] | [ ] | [x] | [x] |
 
 | Knockoff version: | 1.0 | 1.1.0 | 1.1.1 | 1.4 | 1.5 |
+| -------- | ------- | -------- | ------- | -------- |
 | Rails 4 | [x] | [x] | [ ] | [ ] | [ ] |
 | Rails 5.0 | [x] | [x] | [x] | [ ] | [ ] |
 | Rails 5.1 | [x] | [x] | [x] | [ ] | [ ] |
