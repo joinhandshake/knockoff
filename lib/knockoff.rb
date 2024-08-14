@@ -25,7 +25,7 @@ module Knockoff
     end
 
     def replica_pool
-      @replica_pool ||= ReplicaConnectionPool.new(config.replicas_configurations.keys)
+      @replica_pool ||= ReplicaConnectionPool.new(config.replica_database_keys)
     end
 
     def clear_all_active_connections!

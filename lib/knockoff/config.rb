@@ -70,6 +70,10 @@ module Knockoff
       !@replica_configs.empty?
     end
 
+    def replica_database_keys
+      @replicas_configuration_hash.keys
+    end
+
     private
 
     def update_replica_config(key, updated_config)
