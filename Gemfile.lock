@@ -2,8 +2,8 @@ PATH
   remote: .
   specs:
     knockoff (1.4.0)
-      activerecord (~> 7.0.0)
-      activesupport (~> 7.0.0)
+      activerecord (>= 6.1, < 7.1)
+      activesupport (>= 6.1, < 7.1)
 
 GEM
   remote: https://rubygems.org/

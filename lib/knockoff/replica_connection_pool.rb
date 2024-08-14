@@ -46,8 +46,6 @@ module Knockoff
       # Config key is of schema 'knockoff_replica_n'
       class_name = "KnockoffReplica#{config_key.split('_').last}"
 
-      puts "config_key: #{config_key} was something"
-
       # TODO: Hardcoding the uri string feels meh. Either set the database config
       # or reference ENV instead
       Knockoff.module_eval %Q{
