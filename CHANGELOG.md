@@ -1,5 +1,9 @@
 ## Unreleased
 
+## 1.4.0
+
+Update to be Rails 6.1 compatible
+
 ## 1.1.1
 
 - Drop Ruby 2.3 support
@@ -12,8 +16,3 @@
 - Allow setting `Knockoff.default_target` to set the default target other than `:primary` (https://github.com/joinhandshake/knockoff/pull/11)
 - Drop Ruby 2.2 support
 - Add Ruby 2.5 support
-
-## 1.4.0
-
-Update to be Rails 6.1 compatible
-
