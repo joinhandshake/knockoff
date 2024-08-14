@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    knockoff (1.4.0)
+    knockoff (1.5.0)
       activerecord (>= 6.1, < 7.1)
       activesupport (>= 6.1, < 7.1)
 
