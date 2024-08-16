@@ -142,7 +142,7 @@ describe Knockoff do
 
     it 'defines self.connection_db_config' do
       expect(Knockoff::KnockoffReplica0.connection_db_config).not_to be_nil
-      expect(Knockoff::KnockoffReplica0.connection_db_config[:adapter]).to eq 'sqlite3'
+      expect(Knockoff::KnockoffReplica0.connection_db_config.adapter).to eq 'sqlite3'
     end
 
     context "bad configurations" do

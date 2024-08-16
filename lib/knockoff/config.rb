@@ -8,54 +8,17 @@ module Knockoff
     attr_reader :replica_configs
 
     # A hash of replica configs to their config hash.
-    attr_reader :replicas_configurations
+    attr_reader :replicas_configuration_hash
 
     def initialize
       @environment = 'development'
-      @replicas_configurations = {}
+      @replicas_configuration_hash = {}
       set_replica_configs
 
       if !properly_configured? && Knockoff.enabled
         puts "[Knockoff] WARNING: Detected enabled Knockoff without proper replica pool configuration. Setting Knockoff.enabled to false."
         Knockoff.enabled = false
       end
-    end
-
-    def replica_database_keys
-      @replicas_configurations.keys
-    end
-
-    def replica_env_keys
-      if ENV['KNOCKOFF_REPLICA_ENVS'].nil?
-        []
-      else
-        ENV['KNOCKOFF_REPLICA_ENVS'].split(',').map(&:strip)
-      end
-    end
-
-    def update_replica_configs(new_configs)
-      if ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas').present?
-        updated_config = new_configs.deep_dup.merge!(ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas').first.config)
-      end
-
-      @replicas_configurations.each do |key, _config|
-        update_replica_config(key, updated_config)
-      end
-    end
-
-    # If replica_configs actually containts some configuration information, then
-    # we know it was properly configured. Improper URI's will be ignored during the
-    # initialization step.
-    def properly_configured?
-      !@replica_configs.empty?
-    end
-
-    private
-
-    def update_replica_config(key, updated_config)
-      merged_config = @replicas_configurations[key].config.deep_dup.merge!(updated_config)
-      @replicas_configurations[key] = ActiveRecord::DatabaseConfigurations::HashConfig.new(key, key, merged_config)
-      ActiveRecord::Base.configurations.configurations << @replicas_configurations[key]
     end
 
     def set_replica_configs
@@ -69,7 +32,7 @@ module Knockoff
         begin
 
           # Configure parameters such as prepared_statements, pool, reaping_frequency for all replicas.
-          to_copy = ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas')&.first&.config || {}
+          to_copy = ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas')&.first&.configuration_hash || {}
           register_replica_copy(index, env_key, to_copy)
 
         rescue URI::InvalidURIError
@@ -82,11 +45,48 @@ module Knockoff
       end.compact
     end
 
+    def replica_env_keys
+      if ENV['KNOCKOFF_REPLICA_ENVS'].nil?
+        []
+      else
+        ENV['KNOCKOFF_REPLICA_ENVS'].split(',').map(&:strip)
+      end
+    end
+
+    def update_replica_configs(new_configs)
+      if ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas').present?
+        updated_config = new_configs.deep_dup.merge!(ActiveRecord::Base.configurations.configs_for(env_name: 'knockoff_replicas').first.configuration_hash)
+      end
+
+      @replicas_configuration_hash.each do |key, _config|
+        update_replica_config(key, updated_config)
+      end
+    end
+
+    # If replica_configs actually containts some configuration information, then
+    # we know it was properly configured. Improper URI's will be ignored during the
+    # initialization step.
+    def properly_configured?
+      !@replica_configs.empty?
+    end
+
+    def replica_database_keys
+      @replicas_configuration_hash.keys
+    end
+
+    private
+
+    def update_replica_config(key, updated_config)
+      merged_config = @replicas_configuration_hash[key].configuration_hash.deep_dup.merge!(updated_config)
+      @replicas_configuration_hash[key] = ActiveRecord::DatabaseConfigurations::HashConfig.new(key, key, merged_config)
+      ActiveRecord::Base.configurations.configurations << @replicas_configuration_hash[key]
+    end
+
     def register_replica_copy(index, env_key, configuration_hash)
       key = "knockoff_replica_#{index}"
       new_config = create_replica_copy(env_key, key, configuration_hash.deep_dup)
       ActiveRecord::Base.configurations.configurations << new_config
-      @replicas_configurations[key] = new_config
+      @replicas_configuration_hash[key] = new_config
     end
 
     def create_replica_copy(env_key, key, replica_config_hash)

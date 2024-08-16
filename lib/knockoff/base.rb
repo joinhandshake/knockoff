@@ -28,7 +28,7 @@ module Knockoff
     end
 
     def inside_transaction?
-      open_transactions = run_on(:primary) { ActiveRecord::Base.connection.open_transactions }
+      open_transactions = run_on(:primary) { ::ActiveRecord::Base.connection.open_transactions }
       open_transactions > Knockoff.base_transaction_depth
     end
 

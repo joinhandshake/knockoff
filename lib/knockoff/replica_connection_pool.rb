@@ -49,11 +49,11 @@ module Knockoff
       # TODO: Hardcoding the uri string feels meh. Either set the database config
       # or reference ENV instead
       Knockoff.module_eval %Q{
-        class #{class_name} < ActiveRecord::Base
+        class #{class_name} < ::ActiveRecord::Base
           self.abstract_class = true
           establish_connection :#{config_key}
           def self.connection_db_config
-            configurations[#{config_key.to_s.inspect}]
+            configurations.find_db_config #{config_key.to_s.inspect}
           end
         end
       }, __FILE__, __LINE__
