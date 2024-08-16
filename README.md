@@ -19,26 +19,26 @@ A gem for easily using read replicas.
 
 | Knockoff version: | 1.0 | 1.1.0 | 1.1.1 | 1.4 | 1.5 |
 | --- | --- | --- | --- | --- | --- |
-| Ruby 2.2 | [x] | [ ] | [ ] | [ ] | [ ] |
-| Ruby 2.3 | [x] | [x] | [ ] | [ ] | [ ] |
-| Ruby 2.4 | [x] | [x] | [x] | [ ] | [ ] |
-| Ruby 2.5 | [ ] | [x] | [x] | [ ] | [ ] |
-| Ruby 2.6 | [ ] | [ ] | [x] | [x] | [ ] |
-| Ruby 2.7 | [ ] | [ ] | [x] | [x] | [x] |
-| Ruby 3.0 | [ ] | [ ] | [ ] | [x] | [x] |
-| Ruby 3.1 | [ ] | [ ] | [ ] | [x] | [x] |
+| Ruby 2.2 | :heavy_check_mark: |  |  |  |  |
+| Ruby 2.3 | :heavy_check_mark: | :heavy_check_mark: |  |  |  |
+| Ruby 2.4 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |  |
+| Ruby 2.5 |  | :heavy_check_mark: | :heavy_check_mark: |  |  |
+| Ruby 2.6 |  |  | :heavy_check_mark: | :heavy_check_mark: |  |
+| Ruby 2.7 |  |  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| Ruby 3.0 |  |  |  | :heavy_check_mark: | :heavy_check_mark: |
+| Ruby 3.1 |  |  |  | :heavy_check_mark: | :heavy_check_mark: |
 
 | Knockoff version: | 1.0 | 1.1.0 | 1.1.1 | 1.4 | 1.5 |
 | --- | --- | --- | --- | --- | --- |
-| Rails 4 | [x] | [x] | [ ] | [ ] | [ ] |
-| Rails 5.0 | [x] | [x] | [x] | [ ] | [ ] |
-| Rails 5.1 | [x] | [x] | [x] | [ ] | [ ] |
-| Rails 5.2 | [x] | [x] | [x] | [ ] | [ ] |
-| Rails 6.0 | [ ] | [ ] | [x] | [x] | [ ] |
-| Rails 6.1 | [ ] | [ ] | [ ] | [x] | [x] |
-| Rails 7.0 | [ ] | [ ] | [ ] | [ ] | [x] |
-| Rails 7.1 | [ ] | [ ] | [ ] | [ ] | [ ] |
-| Rails 7.2 | [ ] | [ ] | [ ] | [ ] | [ ] |
+| Rails 4 | :heavy_check_mark: | :heavy_check_mark: |  |  |  |
+| Rails 5.0 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |  |
+| Rails 5.1 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |  |
+| Rails 5.2 | :heavy_check_mark: | :heavy_check_mark:| :heavy_check_mark: |  |  |
+| Rails 6.0 |  |  | :heavy_check_mark: | :heavy_check_mark: |  |
+| Rails 6.1 |  |  |  | :heavy_check_mark: | :heavy_check_mark: |
+| Rails 7.0 |  |  |  |  | :heavy_check_mark: |
+| Rails 7.1 |  |  |  |  |  |
+| Rails 7.2 |  |  |  |  |  |
 
 
 ## Installation
