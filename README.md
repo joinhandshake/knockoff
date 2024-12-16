@@ -1,4 +1,9 @@
-# Knockoff
+> [!Important]  
+> This gem is deprecated and no longer updated.
+> 
+> This functionality is natively supported by Rails since 6.1
+
+# [Deprecated] Knockoff
 
 [![Build Status](https://github.com/joinhandshake/knockoff/actions/workflows/ruby.yml/badge.svg)](https://github.com/joinhandshake/knockoff/actions)
 [![Gem Version](https://badge.fury.io/rb/knockoff.svg)](https://badge.fury.io/rb/knockoff)
